@@ -8,10 +8,14 @@ import { useUserContext } from "../context/UserContext";
 import { ACCEPTED_IMAGE_TYPES } from "../constants/files";
 import { isEmpty } from "lodash";
 import { useNavigate } from "react-router-dom";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 import { enqueueSnackbar } from "notistack";
+import { StarRating } from "./StarRating";
+import { enhanceReview } from "../services/ai";
 
 const formSchema = z.object({
   content: z.string().min(1, "Description is required"),
+  rating: z.number().min(1).max(5),
   photo: z
     .any()
     .refine(
@@ -24,7 +28,10 @@ type FormData = z.infer<typeof formSchema>;
 
 interface PostFormProps {
   formData: PostData;
-  onInputChange: (field: keyof PostData, value: string | File | null) => void;
+  onInputChange: (
+    field: keyof PostData,
+    value: string | File | number | null
+  ) => void;
 }
 
 const PostForm = ({ formData, onInputChange }: PostFormProps) => {
@@ -41,10 +48,16 @@ const PostForm = ({ formData, onInputChange }: PostFormProps) => {
 
   const { user } = useUserContext() ?? {};
 
-  const onSubmit = async ({ content, photo }: PostData) => {
+  const onEnhance = async () => {
+    const enhancedContent = await enhanceReview(formData.content);
+    setValue("content", enhancedContent);
+    onInputChange("content", enhancedContent);
+  };
+
+  const onSubmit = async ({ content, photo, rating }: PostData) => {
     try {
       if (isEmpty(errors)) {
-        await createPost({ content, photo, owner: user!._id });
+        await createPost({ content, photo, owner: user!._id, rating });
         navigate("/");
       }
     } catch (error) {
@@ -54,35 +67,87 @@ const PostForm = ({ formData, onInputChange }: PostFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-3">
-        <input
-          {...register("content")}
-          type="text"
-          className="form-control"
-          placeholder="Enter content"
-          value={formData.content}
-          onChange={(e) => onInputChange("content", e.target.value)}
-        />
+    <form
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div>
+        <div className="mb-3">
+          <DropzoneComponent
+            onFileSelect={(file) => {
+              setValue("photo", file);
+              onInputChange("photo", file);
+            }}
+            selectedFile={formData.photo ?? null}
+            height="450px"
+          />
+          {errors.photo && <p className="text-danger">Photo is required</p>}
+        </div>
+        <div className="d-flex justify-content-center align-items-center mb-3">
+          <StarRating
+            rating={formData.rating}
+            onRatingChanged={(newRating: number) => {
+              setValue("rating", newRating);
+              onInputChange("rating", newRating);
+            }}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+
+            marginBottom: "15px",
+          }}
+        >
+          <div style={{ justifyContent: "end", width: "85%" }}>
+            <button
+              className="btn btn-success"
+              onClick={onEnhance}
+              style={{
+                marginBottom: "5px",
+                width: "20%",
+                display: "flex",
+                flexDirection: "row",
+                fontSize: "0.8rem",
+                alignItems: "center",
+              }}
+            >
+              <FaWandMagicSparkles size={12} style={{ marginRight: "5px" }} />
+              Enhance
+            </button>
+          </div>
+
+          <textarea
+            {...register("content")}
+            style={{ width: "85%" }}
+            value={formData.content}
+            onChange={(e) => onInputChange("content", e.target.value)}
+          />
+        </div>
+
         {errors.content && (
           <p className="text-danger">{errors.content.message}</p>
         )}
       </div>
 
-      <div className="mb-3">
-        <DropzoneComponent
-          onFileSelect={(file) => {
-            setValue("photo", file);
-            onInputChange("photo", file);
-          }}
-          selectedFile={formData.photo ?? null}
-        />
-        {errors.photo && <p className="text-danger">Photo is required</p>}
+      <div className="d-flex justify-content-center align-items-center mb-3">
+        <button
+          type="submit"
+          style={{ width: "85%" }}
+          className="btn btn-success"
+        >
+          Add Your Review
+        </button>
       </div>
-
-      <button type="submit" className="btn btn-success w-100">
-        Add Post
-      </button>
     </form>
   );
 };

@@ -7,17 +7,20 @@ export interface Post {
   photoSrc: string;
   content: string;
   likedBy: User[];
+  rating: number;
   comments: PostComment[];
 }
 
 export interface CreatePost {
   owner: string;
   content: string;
+  rating: number;
   photo?: File | null;
 }
 
 export interface UpdatePost {
   content?: string;
   photo?: File | null;
+  rating?: number;
   likedBy?: User[];
 }

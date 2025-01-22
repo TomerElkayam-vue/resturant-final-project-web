@@ -15,7 +15,7 @@ export const register = async (req: Request, res: Response) => {
     await uploadFile(req, res);
 
     const user: User = JSON.parse(req.body.user);
-    user.photo = req.file.filename;
+    user.photo = req.file?.filename;
 
     const usernameExistsCheck = await UserModel.findOne({
       username: user.username,
@@ -152,22 +152,26 @@ export const googleLogin = async (req: Request, res: Response) => {
   const client = new OAuth2Client();
 
   const credential = req.body.credential;
+  console.log("credential", credential);
   try {
     const ticket = await client.verifyIdToken({
       idToken: credential,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
+
     const payload = ticket.getPayload();
     const email = payload?.email;
     let user = await UserModel.findOne({ email: email });
-
+    console.log("User", user);
     if (user == null) {
       user = await UserModel.create({
         email: email,
-        imgUrl: payload?.picture,
+        username: email.split("@")[0],
+        photo: payload?.picture,
         password: "google-signin",
       });
     }
+    console.log("User created", user);
 
     const { accessToken, refreshToken, userTokens } =
       await generateAndSaveTokens(user);

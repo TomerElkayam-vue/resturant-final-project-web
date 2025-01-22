@@ -11,7 +11,7 @@ const PostDetails = () => {
   const { user } = useUserContext() ?? {};
   const { id } = useParams();
 
-  const post = posts?.find((post) => post._id == id);
+  const post = id ? posts?.[id] : undefined;
 
   const onCommentAdd = (commentContent: string) => {
     if (user && post) {
@@ -25,22 +25,31 @@ const PostDetails = () => {
   };
 
   const updatePostInState = (newPost: Post) => {
-    setPosts?.(
-      posts?.map((post) => (post._id === newPost._id ? newPost : post)) ?? []
-    );
+    setPosts?.({
+      ...posts,
+      [newPost._id]: newPost,
+    });
   };
 
   return post ? (
-    <div className="my-5">
+    <div>
       <div
-        className="card p-4"
-        style={{ width: "400px", borderRadius: "12px" }}
+        style={{
+          width: "600px",
+          height: "100%",
+          padding: "15px",
+          backgroundColor: "#F8F9FA",
+        }}
       >
-        <PostComponent post={post} enablePostActions={true}></PostComponent>
-        <PostComments
-          onCommentAdd={onCommentAdd}
-          comments={post.comments}
-        ></PostComments>
+        <div className="d-flex justify-content-center align-items-center">
+          <PostComponent post={post} enablePostActions={true}></PostComponent>
+        </div>
+        <div className="d-flex justify-content-center align-items-center">
+          <PostComments
+            onCommentAdd={onCommentAdd}
+            comments={post.comments}
+          ></PostComments>
+        </div>
       </div>
     </div>
   ) : (

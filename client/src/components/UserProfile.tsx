@@ -36,30 +36,46 @@ const UserProfile = ({
 
   return (
     <div
-      className="post card mb-3"
-      style={{ width: "30vw", minHeight: "300px" }}
+      style={{
+        position: "relative",
+        width: "100%",
+        paddingTop: "15px",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
     >
-      <div className="card-body">
-        <div className="d-flex justify-content-between align-items-center">
-          <h5 className="card-title">User Profile</h5>
-          <button
-            className="btn btn-light"
-            style={{ border: "none", background: "transparent" }}
-            onClick={() => setEditMode((prev) => !prev)}
-          >
-            <FaEdit size={20} />
-          </button>
-        </div>
+      <div>
+        <button
+          className="btn btn-light"
+          style={{
+            border: "none",
+            background: "transparent",
+            position: "absolute",
+            left: 0,
+          }}
+          onClick={() => setEditMode((prev) => !prev)}
+        >
+          <FaEdit size={20} />
+        </button>
+      </div>
 
+      <div>
         {editMode ? (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <div className="mb-3">
               <p>
                 <strong>Email:</strong> {email}
               </p>
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
+              <label className="form-label">Username</label>
               <input
                 type="text"
                 className="form-control"
@@ -71,6 +87,8 @@ const UserProfile = ({
             <div className="mb-3">
               <DropzoneComponent
                 onFileSelect={(file) => setNewProfilePhoto(file)}
+                height="80px"
+                width="80px"
                 selectedFile={newProfilePhoto}
               />
               <img src="" />
@@ -81,17 +99,26 @@ const UserProfile = ({
             </button>
           </div>
         ) : (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <h2>Hello {username}</h2>
             <p>
-              <strong>Email:</strong> {email}
-            </p>
-            <p>
-              <strong>Username:</strong> {username}
+              <strong>email:</strong> {email}
             </p>
             <div className="mb-3">
               <img
                 src={
-                  profilePhoto ? IMAGES_URL + profilePhoto : "/temp-user.png"
+                  profilePhoto
+                    ? profilePhoto.startsWith("http")
+                      ? profilePhoto
+                      : IMAGES_URL + profilePhoto
+                    : "/temp-user.png"
                 }
                 alt="Profile"
                 className="rounded-circle"

@@ -50,6 +50,9 @@ const appPromise: Promise<any> = new Promise((resolve, reject) => {
 
       app.use("/users", usersRouter);
 
+      const aiRouter = require("./routes/ai_route");
+      app.use("/ai", aiRouter);
+
       app.use((error, req, res) => {
         console.error(error.stack);
         res.status(500).send("Something broke!");

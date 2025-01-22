@@ -5,8 +5,8 @@ import { useUserContext } from "./UserContext";
 import { createContext, useContext, useState } from "react";
 
 type PostsContextType = {
-  posts: Post[];
-  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+  posts: Record<Post["_id"], Post>;
+  setPosts: React.Dispatch<React.SetStateAction<Record<Post["_id"], Post>>>;
   isLoading: boolean;
   fetchPosts: () => Promise<void>;
 } | null;
@@ -18,13 +18,17 @@ export const usePostsContext = () => useContext(PostsContext);
 export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUserContext() ?? {};
 
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Record<Post["_id"], Post>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPosts = async () => {
     try {
       setIsLoading(true);
-      setPosts(await getPosts());
+      const postsMap: Record<Post["_id"], Post> = {};
+      (await getPosts()).forEach((post) => {
+        postsMap[post._id] = post;
+      });
+      setPosts(postsMap);
     } catch (err) {
       console.error(err);
     } finally {

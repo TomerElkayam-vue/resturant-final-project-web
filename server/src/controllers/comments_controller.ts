@@ -41,21 +41,6 @@ const getCommentById = async (req: Request, res: Response) => {
   }
 };
 
-// const getCommentByPostId = async (req: Request, res: Response) => {
-//   const postId: string = req.params.postId;
-
-//   try {
-//     const comments: Comment[] = await CommentModel.find({ post: postId });
-//     if (comments.length > 0) {
-//       res.send(comments);
-//     } else {
-//       res.status(404).send("No comments found for post: " + postId);
-//     }
-//   } catch (error) {
-//     res.status(500).send(error.message);
-//   }
-// };
-
 const createComment = async (req: Request, res: Response) => {
   const { postId, comment } = req.body;
 
