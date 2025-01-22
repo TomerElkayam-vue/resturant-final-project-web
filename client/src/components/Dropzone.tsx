@@ -1,19 +1,23 @@
-import { FiUpload } from "react-icons/fi";
 import { useDropzone } from "react-dropzone";
 
 interface DropzoneComponentProps {
   onFileSelect: (file: File | null) => void;
   selectedFile: File | null;
+  height?: string;
+  width?: string;
 }
 
 const DropzoneComponent = ({
   onFileSelect,
   selectedFile,
+  width,
+  height,
 }: DropzoneComponentProps) => {
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
     },
+
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
       if (acceptedFiles.length > 0) {
@@ -30,15 +34,29 @@ const DropzoneComponent = ({
             "dropzone rounded-circle border d-flex justify-content-center align-items-center",
         })}
         className="dropzone d-flex justify-content-center align-items-center m-1"
-        style={{ border: "2px dashed", borderRadius: "5px", padding: "15px" }}
+        style={{ border: "2px", borderRadius: "5px" }}
       >
         <input {...getInputProps()} />
         {selectedFile ? (
-          <p>{selectedFile.name}</p>
+          <img
+            style={{
+              ...(height && { height }),
+              ...(width && { width }),
+              boxShadow: " rgba(0, 0, 0, 0.24) 0px 3px 8px",
+            }}
+            className="img-fluid"
+            src={URL.createObjectURL(selectedFile)}
+          />
         ) : (
           <div className="text-center">
-            <FiUpload size={20} color="#007bff" />
-            <p>Drag and drop an image, or click to select one</p>
+            <img
+              src="/src/assets/blank_image.jpg"
+              style={{
+                ...(height && { height }),
+                ...(width && { width }),
+                boxShadow: " rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              }}
+            />
           </div>
         )}
       </div>

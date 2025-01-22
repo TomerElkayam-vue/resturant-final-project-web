@@ -1,12 +1,12 @@
-import { CreatePost, UpdatePost } from "../interfaces/post";
+import { CreatePost, Post, UpdatePost } from "../interfaces/post";
 import { createAxiosInstance } from "../config/axiosInstance";
 
 const axiosInstance = createAxiosInstance(
   `${import.meta.env.VITE_SERVER_URL}/posts`
 );
 
-export const getPosts = async () => {
-  return (await axiosInstance.get(`/`)).data;
+export const getPosts = async (): Promise<Post[]> => {
+  return (await axiosInstance.get(`/`)).data as Post[];
 };
 
 export const createPost = async (post: CreatePost) => {

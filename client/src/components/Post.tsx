@@ -40,9 +40,9 @@ const PostComponent = ({
 
   const deletePost = () => {
     deletePostById(post._id);
-    setPosts?.(
-      posts?.filter((currentPost) => currentPost._id !== post._id) ?? []
-    );
+    const tempPosts = { ...posts };
+    delete tempPosts[post._id];
+    setPosts?.(tempPosts);
   };
 
   const onLikeToggle = () => {
@@ -66,16 +66,12 @@ const PostComponent = ({
       }
     } catch (error) {
       console.error(error);
-      setPosts?.(prevPosts ?? []);
+      setPosts?.(prevPosts ?? {});
     }
   };
 
   const updatePostInState = (newPost: Post) => {
-    setPosts?.(
-      (prevPosts) =>
-        prevPosts?.map((post) => (post._id === newPost._id ? newPost : post)) ??
-        []
-    );
+    setPosts?.((prevPosts) => ({ ...prevPosts, [newPost._id]: newPost }));
   };
 
   const handleSave = () => {
@@ -88,7 +84,7 @@ const PostComponent = ({
     <div
       className="post card mb-3"
       style={{
-        width: "350px",
+        width: "100%",
         position: "relative",
         overflow: "hidden",
       }}
@@ -133,7 +129,9 @@ const PostComponent = ({
           <img
             src={
               post.owner.photo
-                ? IMAGES_URL + post.owner.photo
+                ? post.owner.photo.startsWith("http")
+                  ? post.owner.photo
+                  : IMAGES_URL + post.owner.photo
                 : "/temp-user.png"
             }
             alt={post.owner.username}
@@ -155,7 +153,6 @@ const PostComponent = ({
             <DropzoneComponent
               onFileSelect={(file) => setEditedPhoto(file)}
               selectedFile={editedPhoto ?? null}
-              
             />
             <button className="btn btn-success mt-1" onClick={handleSave}>
               Save

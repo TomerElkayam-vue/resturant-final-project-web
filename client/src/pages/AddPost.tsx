@@ -3,6 +3,7 @@ import PostForm from "../components/AddPostForm";
 
 export interface PostData {
   content: string;
+  rating: number;
   photo?: File | null;
 }
 
@@ -10,11 +11,12 @@ const AddPost = () => {
   const [formData, setFormData] = useState<PostData>({
     content: "",
     photo: null,
+    rating: 0,
   });
 
   const handleInputChange = (
     field: keyof PostData,
-    value: string | File | null
+    value: string | File | null | number
   ) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -23,14 +25,16 @@ const AddPost = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
+    <div className="d-flex justify-content-center align-items-center">
       <div
-        className="card p-4"
-        style={{ width: "400px", borderRadius: "12px" }}
+        style={{
+          width: "550px",
+          height: "100%",
+          backgroundColor: "#F8F9FA",
+          padding: "15px",
+          boxShadow: " rgba(0, 0, 0, 0.24) 0px 3px 8px",
+        }}
       >
-        <div className="text-center mb-2">
-          <h4 className="mt-2">Add post</h4>
-        </div>
         <PostForm formData={formData} onInputChange={handleInputChange} />
       </div>
     </div>

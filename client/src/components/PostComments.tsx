@@ -18,12 +18,15 @@ const PostComments = ({ comments, onCommentAdd }: PostCommentsProps) => {
   };
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <div className="mt-1">
         <ul className="list-group">
           {comments.map((comment) => (
             <li className="list-group-item" key={comment.content}>
-              <div className="d-flex align-items-center mb-1">
+              <div
+                className="d-flex align-items-center mb-1"
+                style={{ direction: "rtl" }}
+              >
                 <img
                   src={
                     IMAGES_URL +
@@ -43,12 +46,12 @@ const PostComments = ({ comments, onCommentAdd }: PostCommentsProps) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Add a comment..."
+            placeholder="Comment something..."
             value={newCommentContent}
             onChange={(e) => setNewCommentContent(e.target.value)}
           />
           <button className="btn btn-success m-1" onClick={handleAddComment}>
-            Post
+            Comment!
           </button>
         </div>
       </div>
