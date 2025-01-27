@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PostActions from "./PostActions";
 import { Post } from "../interfaces/post";
+import { StarRating } from "./StarRating";
 import { useNavigate } from "react-router-dom";
 import { IMAGES_URL } from "../constants/files";
 import { MdDeleteForever } from "react-icons/md";
@@ -22,6 +23,7 @@ const PostComponent = ({
 }: PostProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [description, setDescription] = useState(post.content);
+  const [rating, setRating] = useState(post.rating);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const { user } = useUserContext() ?? {};
@@ -34,7 +36,7 @@ const PostComponent = ({
       : false;
   };
   const onEditSave = () => {
-    updatePost(post._id, { content: description });
+    updatePost(post._id, { content: description, rating: rating });
   };
 
   const deletePost = () => {
@@ -179,6 +181,7 @@ const PostComponent = ({
               height="200px"
               className="img-fluid mb-1"
             />
+            <StarRating rating={rating} onRatingChanged={setRating}/>
             <button className="btn btn-dark mt-1" onClick={handleSave}>
               Save
             </button>
@@ -190,6 +193,10 @@ const PostComponent = ({
             }}
             style={{
               cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+                alignItems: "center", 
+              flexDirection: "column",
             }}
             className="hover-shadow"
           >
@@ -199,7 +206,9 @@ const PostComponent = ({
               alt="Post"
               className="img-fluid mb-1"
             />
+            <StarRating rating={rating} onRatingChanged={() => setIsEditing(true)}/>
           </div>
+          
         )}
 
         {enablePostActions && (
