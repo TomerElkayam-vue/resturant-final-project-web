@@ -1,12 +1,6 @@
 import { authLogout } from "../services/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
-import {
-  FaHome,
-  FaPlusCircle,
-  FaSignOutAlt,
-  FaUserCircle,
-} from "react-icons/fa";
 import { enqueueSnackbar } from "notistack";
 
 const Navbar = () => {
@@ -25,7 +19,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav
+      className="navbar navbar-expand-lg navbar-dark bg-dark"
+      style={{ justifyContent: "space-between" }}
+    >
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img
@@ -51,37 +48,31 @@ const Navbar = () => {
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <Link to="/" className="nav-link">
-                <FaHome className="me-2" /> Home
+                Home
               </Link>
             </li>
             <li className="nav-item">
-              <div className="nav-link">
-                |
-              </div>
+              <div className="nav-link">|</div>
             </li>
             <li className="nav-item">
               <Link to="/profile" className="nav-link">
-                <FaUserCircle className="me-2" /> Profile
+                Profile
               </Link>
             </li>
             <li className="nav-item">
-              <div className="nav-link">
-                |
-              </div>
+              <div className="nav-link">|</div>
             </li>
             <li className="nav-item">
               <Link to="/add-post" className="nav-link">
-                <FaPlusCircle className="me-2" /> Add Resturant
+                Add Resturant
               </Link>
             </li>
             <li className="nav-item">
-              <div className="nav-link">
-                |
-              </div>
+              <div className="nav-link">|</div>
             </li>
             <li className="nav-item">
               <button className="nav-link btn btn-link" onClick={handleLogout}>
-                <FaSignOutAlt className="me-2" /> Logout
+                Logout
               </button>
             </li>
           </ul>

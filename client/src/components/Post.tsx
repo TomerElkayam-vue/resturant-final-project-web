@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PostActions from "./PostActions";
 import { Post } from "../interfaces/post";
-import DropzoneComponent from "./Dropzone";
 import { useNavigate } from "react-router-dom";
 import { IMAGES_URL } from "../constants/files";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { useUserContext } from "../context/UserContext";
 import { usePostsContext } from "../context/PostsContext";
 import { deletePostById, updatePost } from "../services/posts";
@@ -22,8 +22,8 @@ const PostComponent = ({
 }: PostProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [description, setDescription] = useState(post.content);
-  const [editedPhoto, setEditedPhoto] = useState<File | null>();
-  const [editedPhotoURL, setEditedPhotoURL] = useState<string | null>();
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
   const { user } = useUserContext() ?? {};
   const { setPosts, posts } = usePostsContext() ?? {};
   const navigate = useNavigate();
@@ -34,8 +34,7 @@ const PostComponent = ({
       : false;
   };
   const onEditSave = () => {
-    updatePost(post._id, { photo: editedPhoto, content: description });
-    setEditedPhotoURL(editedPhoto ? URL.createObjectURL(editedPhoto) : null);
+    updatePost(post._id, { content: description });
   };
 
   const deletePost = () => {
@@ -82,14 +81,23 @@ const PostComponent = ({
 
   return (
     <div
-      className="post card mb-3"
+      className="post mb-3"
+      onMouseEnter={() => {
+        setIsHovered(true);
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+      }}
       style={{
         width: "100%",
         position: "relative",
         overflow: "hidden",
+        backgroundColor: "white",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
-      {enableChanges && (
+      {isHovered && (
         <div
           className="edit-buttons"
           style={{
@@ -100,22 +108,22 @@ const PostComponent = ({
             gap: "10px",
           }}
         >
-          {enableChanges && !isEditing && (
+          {enablePostActions && !isEditing && (
             <button
               className="btn btn-light"
               style={{ border: "none", background: "transparent" }}
               onClick={() => setIsEditing(true)} // Trigger edit mode
             >
-              <FaEdit size={20} />
+              <MdEdit size={20} />
             </button>
           )}
-          {deletePost && (
+          {deletePost && enableChanges && (
             <button
               className="btn btn-light"
               style={{ border: "none", background: "transparent" }}
               onClick={deletePost} // Trigger deletePost function on click
             >
-              <FaTrash size={20} />
+              <MdDeleteForever size={30} />
             </button>
           )}
         </div>
@@ -125,7 +133,15 @@ const PostComponent = ({
         className="card-body d-flex justify-content-center row"
         style={{ padding: "1rem" }}
       >
-        <div className="d-flex align-items-center mb-1">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: "5px",
+          }}
+        >
           <img
             src={
               post.owner.photo
@@ -138,21 +154,30 @@ const PostComponent = ({
             className="rounded-circle user-photo m-2"
             style={{ width: "30px", height: "30px" }}
           />
-          <span className="ml-3">{post.owner.username}</span>
+          <span className="ml-3">
+            <b>{post.owner.username}</b>
+          </span>
         </div>
 
         {isEditing ? (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="form-control mb-3"
-              rows={3} // Adjusted to make it fit better in the card
-              style={{ height: "40px", resize: "none" }} // Set height to fit
+              style={{ height: "40px", resize: "none" }}
             />
-            <DropzoneComponent
-              onFileSelect={(file) => setEditedPhoto(file)}
-              selectedFile={editedPhoto ?? null}
+            <img
+              src={IMAGES_URL + post.photoSrc}
+              alt="Post"
+              height="200px"
+              className="img-fluid mb-1"
             />
             <button className="btn btn-dark mt-1" onClick={handleSave}>
               Save
@@ -161,21 +186,19 @@ const PostComponent = ({
         ) : (
           <div
             onClick={() => {
-              if (window.location.pathname === "/") {
-                navigate(`/post/${post._id}`);
-              }
+              navigate(`/post/${post._id}`);
             }}
             style={{
-              cursor: window.location.pathname === "/" ? "pointer" : "default",
+              cursor: "pointer",
             }}
             className="hover-shadow"
           >
-            <img
-              src={editedPhotoURL ? editedPhotoURL : IMAGES_URL + post.photoSrc}
-              alt="Post"
-              className="rounded-circle img-fluid mb-1"
-            />
             <p className="text-center">{description}</p>
+            <img
+              src={IMAGES_URL + post.photoSrc}
+              alt="Post"
+              className="img-fluid mb-1"
+            />
           </div>
         )}
 

@@ -5,8 +5,12 @@ const axiosInstance = createAxiosInstance(
   `${import.meta.env.VITE_SERVER_URL}/posts`
 );
 
-export const getPosts = async (): Promise<Post[]> => {
-  return (await axiosInstance.get(`/`)).data as Post[];
+export const getPosts = async (query?: string): Promise<Post[]> => {
+  return (await axiosInstance.get(`/${query}`)).data as Post[];
+};
+
+export const getPostById = async (postId: string): Promise<Post> => {
+  return (await axiosInstance.get(`/${postId}`)).data as Post;
 };
 
 export const createPost = async (post: CreatePost) => {

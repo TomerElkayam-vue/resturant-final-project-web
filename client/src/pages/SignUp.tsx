@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import SignUpForm from "../components/SignUpForm";
-import SocialSignUp from "../components/SocialSignUp";
 
 export type SignUpData = {
   username: string;
   password: string;
   email: string;
-  photo?: File[] | null;
+  photo?: File | null;
 };
 
 const SignUp = () => {
@@ -43,7 +42,6 @@ const SignUp = () => {
           <p className="text-muted">Hungry? Just sign up!</p>
         </div>
         <SignUpForm formData={formData} onInputChange={handleInputChange} />
-        <SocialSignUp />
         <p className="text-center mt-3">
           Already have an account?{" "}
           <a href="/" className="text-dark">

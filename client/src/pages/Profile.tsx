@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { updateUser } from "../services/users";
 import UserProfile from "../components/UserProfile";
 import { usePostsContext } from "../context/PostsContext";
@@ -7,17 +7,7 @@ import { enqueueSnackbar } from "notistack";
 import { PostsList } from "../components/PostsList";
 
 const Profile = () => {
-  const { posts } = usePostsContext() ?? {};
-
   const { user, setUser } = useUserContext() ?? {};
-
-  const filteredPosts = useMemo(
-    () =>
-      posts
-        ? Object.values(posts)?.filter((post) => post.owner._id === user?._id)
-        : [],
-    [posts, user?._id]
-  );
 
   const handleSaveProfile = async (
     updatedUsername: string,
@@ -59,7 +49,7 @@ const Profile = () => {
         </div>
       )}
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <PostsList posts={filteredPosts} />
+        <PostsList currentUser={user?._id} />
       </div>
     </div>
   );
