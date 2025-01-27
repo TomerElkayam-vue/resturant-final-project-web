@@ -1,32 +1,53 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Post } from "../interfaces/post";
 import PostComponent from "./Post";
-
-const POSTS_PER_PAGE = 2;
+import { usePostsContext } from "../context/PostsContext";
 
 type Props = {
-  posts: Post[] | undefined;
+  currentUser?: string;
 };
 
-export const PostsList = ({ posts }: Props) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+export const PostsList = ({ currentUser }: Props) => {
+  const [currentOffset, setCurrentOffset] = useState<number>(0);
+  const { posts, fetchPosts, isLoading, clearPosts } = usePostsContext() ?? {};
+
+  const reFetch = useCallback((offset: number) => {
+    fetchPosts?.({ offset, ownerId: currentUser });
+  }, []);
+
+  useEffect(() => {
+    clearPosts?.();
+    fetchPosts?.({ ownerId: currentUser });
+  }, []);
+
+  const loaderRef = useRef(null);
+
+  const increaseOffset = () => {
+    setCurrentOffset((prev) => {
+      reFetch(prev + 3);
+      return prev + 3;
+    });
   };
 
-  const paginatedPosts = useMemo(
-    () =>
-      posts?.slice(
-        (currentPage - 1) * POSTS_PER_PAGE,
-        currentPage * POSTS_PER_PAGE
-      ),
-    [currentPage, posts]
-  );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          increaseOffset();
+        }
+      },
+      { root: null, rootMargin: "20px", threshold: 1.0 }
+    );
 
-  const amountOfPages = useMemo(
-    () => Math.ceil((posts?.length ?? 0) / POSTS_PER_PAGE),
-    [posts]
-  );
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -47,8 +68,8 @@ export const PostsList = ({ posts }: Props) => {
               justifyContent: "center",
             }}
           >
-            {paginatedPosts?.length ? (
-              paginatedPosts.map((post) => (
+            {Object.values(posts ?? {})?.length ? (
+              Object.values(posts ?? {}).map((post) => (
                 <div key={post._id}>
                   <PostComponent
                     enableChanges={true}
@@ -63,32 +84,11 @@ export const PostsList = ({ posts }: Props) => {
               </div>
             )}
           </div>
-          <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
-            >
-              {amountOfPages > 0 ? (
-                [...Array(amountOfPages).keys()].map((num) => (
-                  <button
-                    key={num}
-                    className={`btn btn-${
-                      num + 1 === currentPage ? "success" : "outline-success"
-                    } mx-1`}
-                    onClick={() => handlePageChange(num + 1)}
-                  >
-                    {num + 1}
-                  </button>
-                ))
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
         </div>
+        <div
+          ref={loaderRef}
+          style={{ height: "20px", background: "transparent" }}
+        ></div>
       </div>
     </div>
   );

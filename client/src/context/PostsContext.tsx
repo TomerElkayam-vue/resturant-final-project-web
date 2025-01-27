@@ -4,11 +4,35 @@ import { ReactNode, useEffect } from "react";
 import { useUserContext } from "./UserContext";
 import { createContext, useContext, useState } from "react";
 
+const buildPostsQuery = (ownerId?: string, offset?: number) => {
+  if (!ownerId && !offset) {
+    return "";
+  } else {
+    let query = "?";
+    if (ownerId) {
+      query += `postOwner=${ownerId}`;
+    }
+    if (offset) {
+      query += `${
+        query.endsWith("?") ? `offset=${offset}` : `&offset=${offset}`
+      }`;
+    }
+    return query;
+  }
+};
+
 type PostsContextType = {
   posts: Record<Post["_id"], Post>;
   setPosts: React.Dispatch<React.SetStateAction<Record<Post["_id"], Post>>>;
   isLoading: boolean;
-  fetchPosts: () => Promise<void>;
+  clearPosts: () => void;
+  fetchPosts: ({
+    ownerId,
+    offset,
+  }: {
+    ownerId?: string;
+    offset?: number;
+  }) => Promise<void>;
 } | null;
 
 const PostsContext = createContext<PostsContextType>(null);
@@ -21,14 +45,25 @@ export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
   const [posts, setPosts] = useState<Record<Post["_id"], Post>>({});
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchPosts = async () => {
+  const clearPosts = () => {
+    setPosts({});
+  };
+
+  const fetchPosts = async ({
+    ownerId,
+    offset,
+  }: {
+    ownerId?: string;
+    offset?: number;
+  }) => {
     try {
       setIsLoading(true);
       const postsMap: Record<Post["_id"], Post> = {};
-      (await getPosts()).forEach((post) => {
+
+      (await getPosts(buildPostsQuery(ownerId, offset))).forEach((post) => {
         postsMap[post._id] = post;
       });
-      setPosts(postsMap);
+      setPosts((prev) => ({ ...prev, ...postsMap }));
     } catch (err) {
       console.error(err);
     } finally {
@@ -37,7 +72,7 @@ export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts({});
   }, [user]);
 
   return (
@@ -47,6 +82,7 @@ export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
         setPosts,
         isLoading,
         fetchPosts,
+        clearPosts,
       }}
     >
       {children}

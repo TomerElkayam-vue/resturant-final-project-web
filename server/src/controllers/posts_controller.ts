@@ -5,16 +5,23 @@ import { PostModel } from "../models/posts_model";
 
 const getAllPosts = async (req: Request, res: Response) => {
   try {
-    const postOwner: string = String(req.query.postOwner || "");
+    const postOwner: string = String(req.query.postOwner ?? "");
+    const offset: number = Number(req.query.offset ?? "0");
     let posts: Post[];
 
     if (postOwner) {
       posts = await PostModel.find({ owner: postOwner })
         .sort({ createdAt: -1 })
-        .populate("owner", "-tokens -email -password");
+        .skip(offset)
+        .limit(3)
+        .populate("owner", "-tokens -email -password")
+        .populate("likedBy")
+        .populate({ path: "comments", populate: { path: "user" } });
     } else {
       posts = await PostModel.find()
         .sort({ createdAt: -1 })
+        .skip(offset)
+        .limit(3)
         .populate("owner", "-tokens -email -password")
         .populate("likedBy")
         .populate({ path: "comments", populate: { path: "user" } });
