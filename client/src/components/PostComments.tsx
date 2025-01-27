@@ -20,28 +20,6 @@ const PostComments = ({ comments, onCommentAdd }: PostCommentsProps) => {
   return (
     <div style={{ width: "100%" }}>
       <div className="mt-1">
-        <ul className="list-group">
-          {comments.map((comment) => (
-            <li className="list-group-item" key={comment.content}>
-              <div
-                className="d-flex align-items-center mb-1"
-                style={{ direction: "rtl" }}
-              >
-                <img
-                  src={
-                    IMAGES_URL +
-                    (comment.user.photo ? comment.user.photo : "/temp-user.png")
-                  }
-                  alt={comment.user.username}
-                  className="rounded-circle user-photo my-1 mx-2"
-                  style={{ width: "15px", height: "15px" }}
-                />
-                <span>{comment.content}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-        {/* Add comment input */}
         <div className="d-flex align-items-center my-3">
           <input
             type="text"
@@ -54,6 +32,30 @@ const PostComments = ({ comments, onCommentAdd }: PostCommentsProps) => {
             Comment!
           </button>
         </div>
+        <ul className="list-group">
+          {comments.map((comment) => (
+            <li className="list-group-item" key={comment.content}>
+              <div
+                className="d-flex align-items-center mb-1"
+                style={{ direction: "rtl" }}
+              >
+                <img
+                  src={
+                    comment.user.photo
+                      ? comment.user.photo.startsWith("http")
+                        ? comment.user.photo
+                        : IMAGES_URL + comment.user.photo
+                      : "/temp-user.png"
+                  }
+                  alt={comment.user.username}
+                  className="rounded-circle user-photo my-1 mx-2"
+                  style={{ width: "15px", height: "15px" }}
+                />
+                <span>{comment.content}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

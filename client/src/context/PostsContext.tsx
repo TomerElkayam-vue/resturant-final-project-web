@@ -1,5 +1,5 @@
 import { Post } from "../interfaces/post";
-import { getPosts } from "../services/posts";
+import { getPosts, getPostById } from "../services/posts";
 import { ReactNode, useEffect } from "react";
 import { useUserContext } from "./UserContext";
 import { createContext, useContext, useState } from "react";
@@ -26,6 +26,7 @@ type PostsContextType = {
   setPosts: React.Dispatch<React.SetStateAction<Record<Post["_id"], Post>>>;
   isLoading: boolean;
   clearPosts: () => void;
+  fetchPostById: (postId: string) => void;
   fetchPosts: ({
     ownerId,
     offset,
@@ -40,13 +41,24 @@ const PostsContext = createContext<PostsContextType>(null);
 export const usePostsContext = () => useContext(PostsContext);
 
 export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useUserContext() ?? {};
-
   const [posts, setPosts] = useState<Record<Post["_id"], Post>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   const clearPosts = () => {
     setPosts({});
+  };
+
+  const fetchPostById = async (postId: string) => {
+    try {
+      setIsLoading(true);
+
+      const post = await getPostById(postId);
+      setPosts((prev) => ({ ...prev, [post._id]: post }));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fetchPosts = async ({
@@ -71,10 +83,6 @@ export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  useEffect(() => {
-    fetchPosts({});
-  }, [user]);
-
   return (
     <PostsContext.Provider
       value={{
@@ -83,6 +91,7 @@ export const PostsContextProvider = ({ children }: { children: ReactNode }) => {
         isLoading,
         fetchPosts,
         clearPosts,
+        fetchPostById,
       }}
     >
       {children}

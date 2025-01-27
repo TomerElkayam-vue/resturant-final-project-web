@@ -170,7 +170,7 @@ export const signup = async (userData: SignUpData) => {
     const { photo, ...userInfo } = userData;
 
     if (photo) {
-      formData.append("file", photo[0]);
+      formData.append("file", photo);
     }
 
     formData.append("user", JSON.stringify(userInfo));

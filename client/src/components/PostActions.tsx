@@ -1,4 +1,4 @@
-import { FaHeart } from "react-icons/fa";
+import { AiFillLike } from "react-icons/ai";
 import { PostComment } from "../interfaces/comment";
 import { useNavigate } from "react-router-dom";
 
@@ -20,16 +20,23 @@ const PostActions: React.FC<PostActionsProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className="post-actions mt-1">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
       <div className="d-flex align-items-center mb-1">
         <button
           className={`btn btn-light ${
             likedByUser ? "text-danger" : "text-secondary"
           }`}
           onClick={onLikeToggle}
-          style={{ border: "none", background: "transparent", padding: "3px" }}
+          style={{ border: "none", background: "transparent", padding: "8px" }}
         >
-          <FaHeart size={20} />
+          <AiFillLike size={20} />
         </button>
         <span className="ml-1">{likesNumber} Likes</span>
       </div>

@@ -57,39 +57,47 @@ export const PostsList = ({ currentUser }: Props) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
-      <div>
+      {isLoading && Object.values(posts ?? {}).length === 0 ? (
+        <div
+          className="spinner-border text-success"
+          style={{ width: "15rem", height: "15rem" }}
+        />
+      ) : (
         <div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            {Object.values(posts ?? {})?.length ? (
-              Object.values(posts ?? {}).map((post) => (
-                <div key={post._id}>
-                  <PostComponent
-                    enableChanges={true}
-                    key={post._id}
-                    post={post}
-                  />
+          <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              {Object.values(posts ?? {})?.length ? (
+                Object.values(posts ?? {}).map((post) => (
+                  <div key={post._id}>
+                    <PostComponent
+                      enableChanges={true}
+                      key={post._id}
+                      post={post}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div>
+                  <p>No posts available.</p>
                 </div>
-              ))
-            ) : (
-              <div>
-                <p>No posts available.</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-        <div
-          ref={loaderRef}
-          style={{ height: "20px", background: "transparent" }}
-        ></div>
-      </div>
+      )}
+      <div
+        ref={loaderRef}
+        style={{ height: "20px", background: "transparent" }}
+      ></div>
     </div>
   );
 };

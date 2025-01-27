@@ -37,7 +37,10 @@ const getPostById = async (req: Request, res: Response) => {
   const postId: string = req.params.postId;
 
   try {
-    const post: Post = await PostModel.findById(postId).populate("owner");
+    const post: Post = await PostModel.findById(postId)
+      .populate("owner", "-tokens -email -password")
+      .populate("likedBy")
+      .populate({ path: "comments", populate: { path: "user" } });
     if (post) {
       res.send(post);
     } else {

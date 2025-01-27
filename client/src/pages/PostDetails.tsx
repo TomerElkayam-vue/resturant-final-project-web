@@ -5,12 +5,18 @@ import { createComment } from "../services/comment";
 import PostComments from "../components/PostComments";
 import { useUserContext } from "../context/UserContext";
 import { usePostsContext } from "../context/PostsContext";
+import { useEffect } from "react";
 
 const PostDetails = () => {
-  const { setPosts, posts } = usePostsContext() ?? {};
+  const { setPosts, posts, fetchPostById, isLoading } = usePostsContext() ?? {};
+
   const { user } = useUserContext() ?? {};
   const { id } = useParams();
-
+  useEffect(() => {
+    if (id) {
+      fetchPostById?.(id);
+    }
+  }, []);
   const post = id ? posts?.[id] : undefined;
 
   const onCommentAdd = (commentContent: string) => {
@@ -53,7 +59,10 @@ const PostDetails = () => {
       </div>
     </div>
   ) : (
-    <div>post not found.. </div>
+    <div
+      className="spinner-border text-success"
+      style={{ width: "15rem", height: "15rem" }}
+    />
   );
 };
 

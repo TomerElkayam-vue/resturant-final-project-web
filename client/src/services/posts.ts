@@ -9,6 +9,10 @@ export const getPosts = async (query?: string): Promise<Post[]> => {
   return (await axiosInstance.get(`/${query}`)).data as Post[];
 };
 
+export const getPostById = async (postId: string): Promise<Post> => {
+  return (await axiosInstance.get(`/${postId}`)).data as Post;
+};
+
 export const createPost = async (post: CreatePost) => {
   const formData = new FormData();
   const { photo, ...postInfo } = post;
