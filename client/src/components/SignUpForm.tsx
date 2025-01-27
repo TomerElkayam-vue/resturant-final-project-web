@@ -61,6 +61,17 @@ const SignUpForm = ({ formData, onInputChange }: SignUpFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <input
+          {...register("email")}
+          type="text"
+          className="form-control"
+          placeholder="Email*"
+          value={formData.email}
+          onChange={(e) => onInputChange("email", e.target.value)}
+        />
+        {errors.email && <p className="text-danger">{errors.email.message}</p>}
+      </div>
+      <div className="mb-3">
+        <input
           {...register("username")}
           type="text"
           className="form-control"
@@ -85,23 +96,12 @@ const SignUpForm = ({ formData, onInputChange }: SignUpFormProps) => {
           <p className="text-danger">{errors.password.message}</p>
         )}
       </div>
-      <div className="mb-3">
-        <input
-          {...register("email")}
-          type="text"
-          className="form-control"
-          placeholder="Email*"
-          value={formData.email}
-          onChange={(e) => onInputChange("email", e.target.value)}
-        />
-        {errors.email && <p className="text-danger">{errors.email.message}</p>}
-      </div>
       <div
         className="mb-3 border p-3 text-center"
         style={{ borderStyle: "dashed", borderColor: "#ced4da" }}
       >
         <label htmlFor="photo" className="form-label d-block text-muted">
-          Profile Photo
+          Click here! And choose your profile photo
         </label>
         {errors.photo && <p className="text-danger">{errors.photo.message}</p>}
         <input
@@ -112,10 +112,10 @@ const SignUpForm = ({ formData, onInputChange }: SignUpFormProps) => {
           onChange={(e) =>
             onInputChange("photo", e.target.files ? e.target.files[0] : null)
           }
-        />
+        />  
       </div>
       {serverError && <p className="text-danger">{serverError}</p>}
-      <button type="submit" className="btn btn-success w-100">
+      <button type="submit" className="btn btn-dark w-100">
         Sign Up
       </button>
     </form>

@@ -25,16 +25,16 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img
             src="/logo.png"
-            alt="PlantsUniverse Logo"
-            className="logo m-1"
+            alt="JustEat Logo"
+            className="logo m-2 rounded-circle"
             style={{ width: "30px", height: "30px" }}
           />
-          PlantsUniverse
+          JustEat
         </Link>
         <button
           className="navbar-toggler"
@@ -55,14 +55,29 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/add-post" className="nav-link">
-                <FaPlusCircle className="me-2" /> Add Post
-              </Link>
+              <div className="nav-link">
+                |
+              </div>
             </li>
             <li className="nav-item">
               <Link to="/profile" className="nav-link">
                 <FaUserCircle className="me-2" /> Profile
               </Link>
+            </li>
+            <li className="nav-item">
+              <div className="nav-link">
+                |
+              </div>
+            </li>
+            <li className="nav-item">
+              <Link to="/add-post" className="nav-link">
+                <FaPlusCircle className="me-2" /> Add Resturant
+              </Link>
+            </li>
+            <li className="nav-item">
+              <div className="nav-link">
+                |
+              </div>
             </li>
             <li className="nav-item">
               <button className="nav-link btn btn-link" onClick={handleLogout}>

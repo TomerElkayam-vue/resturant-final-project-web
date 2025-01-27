@@ -154,7 +154,7 @@ const PostComponent = ({
               onFileSelect={(file) => setEditedPhoto(file)}
               selectedFile={editedPhoto ?? null}
             />
-            <button className="btn btn-success mt-1" onClick={handleSave}>
+            <button className="btn btn-dark mt-1" onClick={handleSave}>
               Save
             </button>
           </div>
@@ -173,7 +173,7 @@ const PostComponent = ({
             <img
               src={editedPhotoURL ? editedPhotoURL : IMAGES_URL + post.photoSrc}
               alt="Post"
-              className="img-fluid mb-1"
+              className="rounded-circle img-fluid mb-1"
             />
             <p className="text-center">{description}</p>
           </div>

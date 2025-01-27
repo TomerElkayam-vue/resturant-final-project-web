@@ -50,7 +50,7 @@ const PostComments = ({ comments, onCommentAdd }: PostCommentsProps) => {
             value={newCommentContent}
             onChange={(e) => setNewCommentContent(e.target.value)}
           />
-          <button className="btn btn-success m-1" onClick={handleAddComment}>
+          <button className="btn btn-dark m-1" onClick={handleAddComment}>
             Comment!
           </button>
         </div>

@@ -46,19 +46,19 @@ const SignIn = () => {
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div
         className="card p-4"
-        style={{ width: "400px", borderRadius: "12px" }}
+        style={{ width: "600px", borderRadius: "30px" }}
       >
         <div className="text-center mb-2">
           <img
             src="/src/assets/logo.png"
-            alt="PlantsUniverse Logo"
-            style={{ width: "60px", height: "60px" }}
+            alt="JustEat Logo"
+            style={{ width: "150px", height: "150px" }}
           />
-          <h4 className="mt-2">PlantsUniverse</h4>
-          <p className="text-muted">Sign In Page</p>
+          <h4 className="mt-2">JustEat</h4>
+          <p className="text-muted">Hungry? Just sign in!</p>
         </div>
         <SignInForm formData={formData} onInputChange={handleInputChange} />
-        <div className="mt-2 px-5">
+        <div className="mt-2 px-7">
           <GoogleLogin
             onSuccess={handleGoogleLogin}
             onError={googleLoginError}
@@ -66,7 +66,7 @@ const SignIn = () => {
         </div>
         <p className="text-center mt-1">
           Don't have an account?{" "}
-          <a href="/signup" className="text-success">
+          <a href="/signup" className="text-dark">
             Sign Up
           </a>
         </p>

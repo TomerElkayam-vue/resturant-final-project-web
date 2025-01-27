@@ -31,7 +31,7 @@ export const PostsList = ({ posts }: Props) => {
     <div
       style={{
         height: "100%",
-        backgroundColor: "#F8F9FA",
+        backgroundColor: "#fcf1d9",
         width: "600px",
         display: "flex",
         flexDirection: "column",
@@ -76,7 +76,7 @@ export const PostsList = ({ posts }: Props) => {
                   <button
                     key={num}
                     className={`btn btn-${
-                      num + 1 === currentPage ? "success" : "outline-success"
+                      num + 1 === currentPage ? "dark" : "outline-dark"
                     } mx-1`}
                     onClick={() => handlePageChange(num + 1)}
                   >

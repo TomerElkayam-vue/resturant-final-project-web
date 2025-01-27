@@ -11,7 +11,7 @@ const Home = () => {
 
   return !posts || isLoading ? (
     <div
-      className="spinner-border text-success"
+      className="spinner-border text-dark"
       style={{ width: "15rem", height: "15rem" }}
     />
   ) : (
