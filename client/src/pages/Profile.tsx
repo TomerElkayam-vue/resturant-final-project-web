@@ -38,7 +38,7 @@ const Profile = () => {
     >
       {user && (
         <div
-          style={{ width: "100%", height: "15%", backgroundColor: "#F8F9FA" }}
+          style={{ width: "100%", height: "15%", backgroundColor: "#fcf1d9" }}
         >
           <UserProfile
             username={user.username}

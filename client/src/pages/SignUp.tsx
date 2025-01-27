@@ -31,22 +31,22 @@ const SignUp = () => {
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div
         className="card p-4"
-        style={{ width: "400px", borderRadius: "12px" }}
+        style={{ width: "600px", borderRadius: "30px" }}
       >
         <div className="text-center mb-2">
           <img
             src="/src/assets/logo.png"
-            alt="PlantsUniverse Logo"
-            style={{ width: "60px", height: "60px" }}
+            alt="JustEat Logo"
+            style={{ width: "150px", height: "150px" }}
           />
-          <h4 className="mt-2">PlantsUniverse</h4>
-          <p className="text-muted">Sign Up Page</p>
+          <h4 className="mt-2">JustEat</h4>
+          <p className="text-muted">Hungry? Just sign up!</p>
         </div>
         <SignUpForm formData={formData} onInputChange={handleInputChange} />
         <SocialSignUp />
-        <p className="text-center mt-1">
+        <p className="text-center mt-3">
           Already have an account?{" "}
-          <a href="/" className="text-success">
+          <a href="/" className="text-dark">
             Sign In
           </a>
         </p>

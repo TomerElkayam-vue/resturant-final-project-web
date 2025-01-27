@@ -94,7 +94,7 @@ const UserProfile = ({
               <img src="" />
             </div>
 
-            <button className="btn btn-success" onClick={handleSave}>
+            <button className="btn btn-dark" onClick={handleSave}>
               Save
             </button>
           </div>
@@ -107,9 +107,9 @@ const UserProfile = ({
               justifyContent: "center",
             }}
           >
-            <h2>Hello {username}</h2>
+            <h2>Happy to see you {username}</h2>
             <p>
-              <strong>email:</strong> {email}
+              <strong>Email:</strong> {email}
             </p>
             <div className="mb-3">
               <img
@@ -122,7 +122,7 @@ const UserProfile = ({
                 }
                 alt="Profile"
                 className="rounded-circle"
-                style={{ width: "80px", height: "80px" }}
+                style={{ width: "150px", height: "150px" }}
               />
             </div>
           </div>

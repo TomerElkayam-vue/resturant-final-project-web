@@ -69,7 +69,7 @@ const SignInForm = ({ formData, onInputChange }: SignInFormProps) => {
         )}
       </div>
       {serverError && <p className="text-danger">{serverError}</p>}
-      <button type="submit" className="btn btn-success w-100">
+      <button type="submit" className="btn btn-dark w-100">
         Sign In
       </button>
     </form>
