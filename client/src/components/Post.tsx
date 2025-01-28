@@ -99,7 +99,7 @@ const PostComponent = ({
         justifyContent: "center",
       }}
     >
-      {isHovered && (
+      {isHovered && user?._id === post.owner._id && (
         <div
           className="edit-buttons"
           style={{
@@ -181,7 +181,7 @@ const PostComponent = ({
               height="200px"
               className="img-fluid mb-1"
             />
-            <StarRating rating={rating} onRatingChanged={setRating}/>
+            <StarRating rating={rating} onRatingChanged={setRating} />
             <button className="btn btn-dark mt-1" onClick={handleSave}>
               Save
             </button>
@@ -195,7 +195,7 @@ const PostComponent = ({
               cursor: "pointer",
               display: "flex",
               justifyContent: "center",
-                alignItems: "center", 
+              alignItems: "center",
               flexDirection: "column",
             }}
             className="hover-shadow"
@@ -206,9 +206,11 @@ const PostComponent = ({
               alt="Post"
               className="img-fluid mb-1"
             />
-            <StarRating rating={rating} onRatingChanged={() => setIsEditing(true)}/>
+            <StarRating
+              rating={rating}
+              onRatingChanged={() => setIsEditing(true)}
+            />
           </div>
-          
         )}
 
         {enablePostActions && (
