@@ -21,10 +21,3 @@ export const enhanceReview = async (req: Request, res: Response) => {
 
   res.send(textToReturn);
 };
-
-const convertToJson = (jsonResponse: string) => {
-  const onlyJsonText = jsonResponse.slice(
-    jsonResponse.indexOf("{"),
-    jsonResponse.indexOf("}")
-  );
-};

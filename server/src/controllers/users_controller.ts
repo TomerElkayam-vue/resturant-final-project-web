@@ -94,7 +94,7 @@ const deleteUserById = async (req: Request, res: Response) => {
   }
 };
 
-const getMe = async (req: Request & { user: User }, res: Response) => {
+const getCurrentUser = async (req: Request & { user: User }, res: Response) => {
   try {
     res.send(req.user);
   } catch (error) {
@@ -108,5 +108,5 @@ export {
   createUser,
   updateUser,
   deleteUserById,
-  getMe,
+  getCurrentUser,
 };

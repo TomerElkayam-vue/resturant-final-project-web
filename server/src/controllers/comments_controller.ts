@@ -93,7 +93,6 @@ const deleteCommentById = async (req: Request, res: Response) => {
 export {
   getAllComments,
   getCommentById,
-  // getCommentByPostId,
   createComment,
   updateComment,
   deleteCommentById,

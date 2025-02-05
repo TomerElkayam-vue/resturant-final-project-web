@@ -8,7 +8,7 @@
     "start": "tsc && node dist/server.js",
     "test": "jest --detectOpenHandles --runInBand --coverage --forceExit"
   },
-  "author": "Ron Aruch | Noam Ifat",
+  "author": "Colman",
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

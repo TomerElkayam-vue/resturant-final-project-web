@@ -6,7 +6,7 @@ GET http://localhost:3000/posts
 ###
 
 GET http://localhost:3000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZjMmI2YjQ0ODY4Zjc0OTkxZTZlMmYiLCJ1c2VybmFtZSI6InJvbjgwMCIsInBhc3N3b3JkIjoiMTIzNCIsImVtYWlsIjoiMTIzNCIsImlhdCI6MTczNTE0MjI2NywiZXhwIjoxNzM1MTQyNTY3fQ.0R8ciFM5gx54y90n9k_Z3foos6VPEjRAHdRTMcSW2cU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzdkNDhjYjFjMDE4M2VhMjgyZDE0ZjUiLCJ1c2VybmFtZSI6InRvbWVyIiwiaWF0IjoxNzM2OTQ2ODkwLCJleHAiOjE3MzY5NjEyOTB9.rS-OxWPOWkJlmZ7TBk2bqpkWNasHBY9cjtUAJLpbNVk
 
 
 ###
@@ -16,23 +16,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZjMmI2Y
 ###
 
 POST http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzdkNDhjYjFjMDE4M2VhMjgyZDE0ZjUiLCJ1c2VybmFtZSI6InRvbWVyIiwiaWF0IjoxNzM2OTQ2ODkwLCJleHAiOjE3MzY5NjEyOTB9.rS-OxWPOWkJlmZ7TBk2bqpkWNasHBY9cjtUAJLpbNVk
 Content-Type: application/json
 
 {
-    "title": "title",
-    "owner": "675063ff82f983bbbce757e8",
-    "content": "content",
-    "photoSrc": ""
+    "title": "jks",
+    "owner": "677d48cb1c0183ea282d14f5",
+    "content": "data"
 }
 
-##
+###
 
 PUT http://localhost:3000/posts/674088366365996d79acfdd2
 Content-Type: application/json
 
 {
     "title": "New and amazing post",
-    "owner": "noam12",
+    "owner": "yoel12",
     "content": "Very good job"
 }
 
@@ -58,8 +58,8 @@ POST http://localhost:3000/comments
 Content-Type: application/json
 
 {
-    "user": "ron",
-    "content": "content",
+    "user": "tomer",
+    "content": "blabla",
     "postId": "674088366365996d79acfdd2"
 }
 
@@ -69,7 +69,7 @@ PUT http://localhost:3000/comments/6740902515e5bdf0e3363dcb
 Content-Type: application/json
 
 {
-    "content": "content post updating now"
+    "content": "blablabla"
 }
 
 ###
@@ -88,9 +88,9 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "username": "noam12",
+    "username": "yoel12",
     "password": "1234",
-    "email": "noam12m@gmail.com"
+    "email": "yoel12m@gmail.com"
 }
 
 ###
@@ -99,9 +99,9 @@ PUT http://localhost:3000/users/675063b982f983bbbce757e3
 Content-Type: application/json
 
 {
-    "username": "noam12",
+    "username": "yoel12",
     "password": "12342",
-    "email": "noam12m@gmail.com"
+    "email": "yoel12m@gmail.com"
 }
 
 ###
@@ -110,10 +110,9 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-        "username": "ron20",
-        "password": "1234",
-        "email": "r20@gmail.com"
-    }
+    "username": "tomer",
+    "password": "123",
+    "email": "tomerelk@gmail.com"
 }
 
 ###
@@ -124,8 +123,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "r20@gmail.com",
-    "password": "1234"
+    "email": "tomerelk@gmail.com",
+    "password": "123"
 }
 
 ###

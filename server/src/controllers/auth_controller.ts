@@ -1,6 +1,4 @@
-import ms from "ms";
 import bcrypt from "bcrypt";
-import moment from "moment";
 import jwt from "jsonwebtoken";
 import { User } from "../dtos/user";
 import { Request, Response } from "express";
@@ -154,9 +152,9 @@ export const refreshToken = async (req: Request, res: Response) => {
 
 export const googleLogin = async (req: Request, res: Response) => {
   const client = new OAuth2Client();
+  const GOOGLE_PASSWORD = "google-signin";
 
   const credential = req.body.credential;
-  console.log("credential", credential);
   try {
     const ticket = await client.verifyIdToken({
       idToken: credential,
@@ -166,16 +164,14 @@ export const googleLogin = async (req: Request, res: Response) => {
     const payload = ticket.getPayload();
     const email = payload?.email;
     let user = await UserModel.findOne({ email: email });
-    console.log("User", user);
     if (user == null) {
       user = await UserModel.create({
         email: email,
         username: email.split("@")[0],
         photo: payload?.picture,
-        password: "google-signin",
+        password: GOOGLE_PASSWORD,
       });
     }
-    console.log("User created", user);
 
     const { accessToken, refreshToken, userTokens } =
       await generateAndSaveTokens(user);
@@ -189,6 +185,6 @@ export const googleLogin = async (req: Request, res: Response) => {
       user,
     });
   } catch (err) {
-    return res.status(500).send("failed to sign in with google");
+    return res.status(500).send("failed to sign in google");
   }
 };
